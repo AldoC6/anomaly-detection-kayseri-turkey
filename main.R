@@ -44,5 +44,3 @@ tabla_meses$Mes <- factor(
 
 kayseri_z <- monthly_z_score(tm, tabla_meses)
 kayseri_z
-
-write.csv(kayseri_z,"data/kayseri_z.csv",row.names = FALSE)
