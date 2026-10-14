@@ -1,4 +1,4 @@
-df_kayseri<- read.csv(file.choose(), header = TRUE)
+df_kayseri<- read.csv("data/AereopuertoKayseri_1975-2008.csv", header = TRUE)
 
 df_kayseri$DATE <- as.Date(df_kayseri$DATE, format = "%d/%m/%Y")
 
