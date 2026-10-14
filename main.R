@@ -4,8 +4,6 @@ df_kayseri$DATE <- as.Date(df_kayseri$DATE, format = "%d/%m/%Y")
 
 kay <- df_kayseri[, c("DATE", "mean_temperature")]
 
-
-
 kay$Anio <- as.integer(format(kay$DATE, "%Y"))
 kay$Mes <- as.integer(format(kay$DATE, "%m"))
 
