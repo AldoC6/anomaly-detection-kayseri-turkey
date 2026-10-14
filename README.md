@@ -1,6 +1,6 @@
 ## Requisitos previos antes de ejecutar el proyecto
  
- - [Rtools](https://cran.r-project.org/bin/windows/Rtools/) | La que corresponda a tu versión de R | **Solo Windows.** Obligatorio: `dbscan 1.1-5` es una versión antigua y se compila desde código fuente 
+ - [Rtools](https://cran.r-project.org/bin/windows/Rtools/rtools40.html) | La que corresponda a tu versión de R | **Solo Windows.** Obligatorio: `dbscan 1.1-5` es una versión antigua y se compila desde código fuente 
 
 > Después de instalar Rtools, **reinicia RStudio** para que se actualice el PATH.
 
