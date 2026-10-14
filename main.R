@@ -1,3 +1,5 @@
+library(dbscan)
+
 source("utils/deseason.R")
 
 df_kayseri<- read.csv("data/AereopuertoKayseri_1975-2008.csv", header = TRUE)
@@ -26,21 +28,8 @@ head(tm)
 
 dim(tm)
 
-tabla_meses <- aggregate(
-  Temp_mensual ~ Mes,
-  data = tm,
-  FUN = function(x) c(Promedio = mean(x), Desv_est = sd(x))
-)
+kayseri_z <- monthly_z_score(tm)
 
-tabla_meses <- do.call(data.frame, tabla_meses)
-names(tabla_meses) <- c("Mes", "Promedio", "Desv_est")
 
-tabla_meses$Mes <- factor(
-  tabla_meses$Mes,
-  levels = 1:12,
-  labels = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
-)
 
-kayseri_z <- monthly_z_score(tm, tabla_meses)
-kayseri_z
+
