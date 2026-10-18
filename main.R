@@ -1,6 +1,7 @@
 library(dbscan)
 
 source("utils/deseason.R")
+source("utils/deseason_vs_original.R")
 
 df_kayseri<- read.csv("data/AereopuertoKayseri_1975-2008.csv", header = TRUE)
 
@@ -29,6 +30,14 @@ head(tm)
 dim(tm)
 
 kayseri_z <- monthly_z_score(tm)
+
+plot_original_vs_deseason(kayseri_z)
+
+# Exporta el png a storage/
+png("storage/original-vs-deseason.png", width = 1000, height = 600, res = 120)
+plot_original_vs_deseason(kayseri_z)
+dev.off()
+
 
 
 
