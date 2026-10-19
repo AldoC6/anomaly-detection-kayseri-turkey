@@ -1,7 +1,7 @@
 library(dbscan)
 
 source("utils/deseason.R")
-source("utils/deseason_vs_original.R")
+source("utils/plots.R")
 
 df_kayseri<- read.csv("data/AereopuertoKayseri_1975-2008.csv", header = TRUE)
 
