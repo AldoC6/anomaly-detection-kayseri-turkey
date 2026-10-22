@@ -37,8 +37,3 @@ plot_original_vs_deseason(kayseri_z)
 png("storage/original-vs-deseason.png", width = 1000, height = 600, res = 120)
 plot_original_vs_deseason(kayseri_z)
 dev.off()
-
-
-
-
-
