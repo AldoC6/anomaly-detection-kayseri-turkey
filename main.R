@@ -37,20 +37,3 @@ plot_original_vs_deseason(kayseri_z)
 png("storage/original-vs-deseason.png", width = 1000, height = 600, res = 120)
 plot_original_vs_deseason(kayseri_z)
 dev.off()
-
-anomalo_prueba <- abs(kayseri_z$Z) > 2
-plot_anomalias(kayseri_z, anomalo_prueba, "Prueba")
-
-# Debe fallar con un error claro:
-plot_anomalias(kayseri_z, c(TRUE, FALSE), "Prueba")
-
-# Prueba con dos paneles:
-par(mfrow = c(2, 1))
-plot_anomalias(kayseri_z, abs(kayseri_z$Z) > 2, "a)")
-plot_anomalias(kayseri_z, abs(kayseri_z$Z) > 3, "b)")
-par(mfrow = c(1, 1))
-
-
-
-
-
