@@ -61,3 +61,63 @@ plot_original_vs_deseason <- function(df) {
   invisible(NULL)
   
 }
+
+plot_anomalias <- function(df, anomalo, subtitulo = NULL) {
+  
+  stopifnot(length(anomalo) == nrow(df))
+  
+  texto_fecha <- paste(df$Anio, df$Mes, 1, sep = "-")
+  fechas <- as.Date(texto_fecha)
+  
+  # Estilos (se reutilizan en plot() y en legend())
+  tipo        <- "p"
+  pch_normal  <- 4          # x
+  pch_anomalo <- 3          # +
+  col_normal  <- "grey40"
+  col_anomalo <- "black"
+  cex_normal  <- 0.8
+  cex_anomalo <- 1.2
+  
+  pch_puntos <- ifelse(anomalo, pch_anomalo, pch_normal)
+  col_puntos <- ifelse(anomalo, col_anomalo, col_normal)
+  cex_puntos <- ifelse(anomalo, cex_anomalo, cex_normal)
+  
+  # Eje Y de 1 en 1; el +1 deja espacio a la leyenda
+  y_min <- floor(min(df$Z, na.rm = TRUE))
+  y_max <- ceiling(max(df$Z, na.rm = TRUE)) + 1
+  # Para forzar -3 a 4 con este dataset:
+  # y_min <- -3; y_max <- 4
+  
+  plot(fechas, df$Z,
+       type = tipo,
+       pch  = pch_puntos,
+       col  = col_puntos,
+       cex  = cex_puntos,
+       ylim = c(y_min, y_max),
+       xaxt = "n",
+       yaxt = "n",
+       xlab = "Time (months)",
+       ylab = "Temperature (\u00B0C)")
+  
+  axis(2, at = seq(y_min, y_max, by = 1), las = 1)
+  
+  abline(h = 0, col = "grey80")
+  
+  marcas <- as.Date(c("1975-01-01", "1980-06-01", "1985-12-01", "1991-06-01",
+                      "1996-12-01", "2002-05-01", "2007-11-01"))
+  axis(1, at = marcas, labels = format(marcas, "%m/%Y"), cex.axis = 0.8)
+  
+  legend("top",
+         legend = c("Normal Data", "Anomalous Data"),
+         pch    = c(pch_normal, pch_anomalo),
+         col    = c(col_normal, col_anomalo),
+         pt.cex = c(cex_normal, cex_anomalo),
+         horiz  = TRUE,
+         bty    = "n")
+  
+  if (!is.null(subtitulo)) {
+    title(sub = subtitulo)
+  }
+  
+  invisible(NULL)
+}
