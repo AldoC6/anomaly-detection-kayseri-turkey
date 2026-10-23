@@ -121,3 +121,11 @@ plot_anomalias <- function(df, anomalo, subtitulo = NULL) {
   
   invisible(NULL)
 }
+
+
+
+exportar <- function(archivo, df, anomalo, subtitulo) {
+  png(archivo, width = 1000, height = 600, res = 120)
+  on.exit(dev.off())
+  plot_anomalias(df, anomalo, subtitulo)
+}
