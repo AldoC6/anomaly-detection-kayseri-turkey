@@ -1,6 +1,3 @@
-library(dbscan)
-
-
 detectar_dbscan <- function(z, eps, minpts) {
   if (!is.numeric(z)) stop("z debe ser un vector numérico")
   if (anyNA(z)) stop("z no debe contener NA")
