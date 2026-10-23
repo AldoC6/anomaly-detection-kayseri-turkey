@@ -4,5 +4,6 @@
 .Ruserdata
 
 
-storage/*
-!storage/.gitkeep
+storage/**
+!storage/**/
+!storage/**/.gitkeep
