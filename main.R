@@ -6,7 +6,7 @@ source("utils/plots.R")
 source("utils/stat_method.R")
 source("utils/dbscan_method.R")
 
-df_kayseri<- read.csv("data/AereopuertoKayseri_1975-2008.csv", header = TRUE)
+df_kayseri<- read.csv("data/AereopuertoKayseri_1975-2007.csv", header = TRUE)
 
 df_kayseri$DATE <- as.Date(df_kayseri$DATE, format = "%d/%m/%Y")
 
