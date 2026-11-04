@@ -53,17 +53,44 @@ packageVersion("dbscan")   # debe devolver ‘1.1.5’
 ```
 .
 ├── main.R                    # Script principal del análisis
-├── 01_promedios_mensuales.R  # Paso 1: promedios mensuales
-├── 02_tabla_de_promedios.R   # Paso 2: tabla de promedios por mes
-├── utils/
-│   └── deseason.R            # Funciones auxiliares (p. ej. monthly_z_score)
+├── utils/                    # Funciones auxiliares (limpieza, desestacionalización, gráficas, métodos)
+├── exploracion/              # Scripts de exploración (promedios mensuales)
+├── equivalencia/             # Scripts de equivalencia Develi vs. Kayseri
+│   └── descartados/          # Alternativas probadas que no se usaron
+├── docs/
+│   └── fuentes.md            # Citas y enlaces de descarga de los datos
 ├── data/
-│   └── AereopuertoKayseri_1975-2008.csv
+│   ├── AereopuertoKayseri_1975-2007.csv
+│   └── equivalencia/
+│       ├── fuentes/          # Datos originales descargados (los pesados no se suben)
+│       ├── procesados/       # Salidas de los scripts de equivalencia
+│       └── privado/          # Datos de uso restringido (ignorado por git)
 ├── renv/                     # Configuración de renv (la biblioteca no se sube a Git)
 ├── renv.lock                 # Versiones exactas de los paquetes
 └── .Rprofile                 # Activa renv al abrir el proyecto
 ```
  
+---
+
+## Equivalencia de estaciones
+
+El paper usa la estación de Develi; nosotros usamos el Aeropuerto de Kayseri (Erkilet). Estos scripts comparan
+las dos estaciones (media y desviación estándar) en humedad relativa y precipitación, en periodos comparables.
+Las fuentes y enlaces de descarga están en [`docs/fuentes.md`](docs/fuentes.md).
+
+Se corren desde la raíz del proyecto, en este orden:
+
+| # | Script | Entrada | Salida (en `data/equivalencia/`) |
+|---|---|---|---|
+| 1 | `equivalencia/01_descarga_ghcnh_erkilet.R` | Descarga de GHCNh | `procesados/AereopuertoKayseri_GHCNh_1975-2007.csv` |
+| 2 | `equivalencia/02_humedad_kayseri_ghcnh.R` | Salida del 1 | `procesados/kayseri-erkilet-data-relative-humidity.csv` |
+| 3 | `equivalencia/03_humedad_develi.R` | `privado/17836_RelHum.csv` | `privado/develi-data-relative-humidity.csv` |
+| 4 | `equivalencia/04_precipitacion_ghcnm_v2.R` | `fuentes/v2.prcp` | `procesados/precipitacion_GHCNMv2_Develi_Kayseri.csv` |
+| 5 | `equivalencia/05_precipitacion_anios_comunes.R` | Salida del 4 | `procesados/precipitacion_mensual_comun.csv` (los totales anuales se calculan en Excel) |
+
+> El paso 3 necesita datos de uso restringido que no están en el repo; sin ellos, ese paso se salta.
+> Los pasos 1 y 4 necesitan los archivos pesados de `docs/fuentes.md`.
+
 ---
 
 ## Trabajo en equipo con renv
