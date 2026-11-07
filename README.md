@@ -75,7 +75,7 @@ packageVersion("dbscan")   # debe devolver ‘1.1.5’
 ## Equivalencia de estaciones
 
 El paper usa la estación de Develi; nosotros usamos el Aeropuerto de Kayseri (Erkilet). Estos scripts comparan
-las dos estaciones (media y desviación estándar) en humedad relativa y precipitación, en periodos comparables.
+las dos estaciones (media y desviación estándar) en temperatura, humedad relativa y precipitación, en periodos comparables.
 Las fuentes y enlaces de descarga están en [`docs/fuentes.md`](docs/fuentes.md).
 
 Se corren desde la raíz del proyecto, en este orden:
@@ -87,9 +87,10 @@ Se corren desde la raíz del proyecto, en este orden:
 | 3 | `equivalencia/03_humedad_develi.R` | `privado/17836_RelHum.csv` | `privado/develi-data-relative-humidity.csv` |
 | 4 | `equivalencia/04_precipitacion_ghcnm_v2.R` | `fuentes/v2.prcp` | `procesados/precipitacion_GHCNMv2_Develi_Kayseri.csv` |
 | 5 | `equivalencia/05_precipitacion_anios_comunes.R` | Salida del 4 | `procesados/precipitacion_mensual_comun.csv` (los totales anuales se calculan en Excel) |
+| 6 | `equivalencia/06_temperatura_develi_ghcnm_v4.R` | Descarga de GHCN-M v4 (`qfe`) | `procesados/develi_tavg_ghcnm_v4_qfe_1975-2007.csv` |
 
 > El paso 3 necesita datos de uso restringido que no están en el repo; sin ellos, ese paso se salta.
-> Los pasos 1 y 4 necesitan los archivos pesados de `docs/fuentes.md`.
+> Los pasos 1, 4 y 6 necesitan los archivos pesados de `docs/fuentes.md` (el 1 y el 6 los descargan solos).
 
 ---
 
