@@ -88,9 +88,10 @@ Se corren desde la raíz del proyecto, en este orden:
 | 4 | `equivalencia/04_precipitacion_ghcnm_v2.R` | `fuentes/v2.prcp` | `procesados/precipitacion_GHCNMv2_Develi_Kayseri.csv` |
 | 5 | `equivalencia/05_precipitacion_anios_comunes.R` | Salida del 4 | `procesados/precipitacion_mensual_comun.csv` (los totales anuales se calculan en Excel) |
 | 6 | `equivalencia/06_temperatura_develi_ghcnm_v4.R` | Descarga de GHCN-M v4 (`qfe`) | `procesados/develi_tavg_ghcnm_v4_qfe_1975-2007.csv` |
+| 7 | `equivalencia/07_precipitacion_precl.R` | Descarga de PREC/L 0.5° (NOAA PSL) | `procesados/precip_precl_develi_kayseri_1975-2007.csv` |
 
 > El paso 3 necesita datos de uso restringido que no están en el repo; sin ellos, ese paso se salta.
-> Los pasos 1, 4 y 6 necesitan los archivos pesados de `docs/fuentes.md` (el 1 y el 6 los descargan solos).
+> Los pasos 1, 4, 6 y 7 necesitan los archivos de `docs/fuentes.md` (el 1, el 6 y el 7 los descargan solos).
 
 ---
 
