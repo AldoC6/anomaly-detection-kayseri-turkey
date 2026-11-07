@@ -27,6 +27,14 @@ Los archivos pesados no están en el repo: se descargan con los enlaces de abajo
 - Página de la estación: https://berkeleyearth.lbl.gov/stations/24105
 - Archivo: `data/equivalencia/fuentes/24105-TAVG-Data.txt`.
 
+## Temperatura mensual — Develi (NOAA GHCN-Monthly v4)
+
+- Cita del dataset: Menne, M. J., et al. *Global Historical Climatology Network – Monthly Temperature, Version 4*. NOAA National Centers for Environmental Information. https://doi.org/10.7289/V5XW4GTH
+- Artículo de referencia: Menne, M. J., Williams, C. N., Gleason, B. E., Rennie, J. J., & Lawrimore, J. H. (2018). The Global Historical Climatology Network Monthly Temperature Dataset, Version 4. *Journal of Climate, 31*(24), 9835–9854. https://doi.org/10.1175/JCLI-D-18-0094.1
+- Descarga: https://www.ncei.noaa.gov/pub/data/ghcn/v4/ghcnm.tavg.latest.qfe.tar.gz (variante `qfe`; las variantes `qcu`/`qcf`/`qfe` se describen en el readme de NOAA, sección 2.2.1: https://www.ncei.noaa.gov/pub/data/ghcn/v4/readme.txt).
+- Estación: `TUXLT848934` (DEVELI, 38.4 N, 35.5 E, 1180 m).
+- Carpeta: `data/equivalencia/fuentes/ghcnm_v4/` (la llena `equivalencia/06_temperatura_develi_ghcnm_v4.R`; no se sube a git).
+
 ## Humedad relativa — Develi
 
 - Fuente: Servicio Meteorológico de Turquía (MGM), estación Develi 17836. Datos proporcionados por la Prof. Dr. Filiz Dadaşer-Çelik (Erciyes University, coautora del paper), comunicación personal por correo, 3 de noviembre de 2026.
