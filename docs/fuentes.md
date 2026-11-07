@@ -35,6 +35,16 @@ Los archivos pesados no están en el repo: se descargan con los enlaces de abajo
 - Estación: `TUXLT848934` (DEVELI, 38.4 N, 35.5 E, 1180 m).
 - Carpeta: `data/equivalencia/fuentes/ghcnm_v4/` (la llena `equivalencia/06_temperatura_develi_ghcnm_v4.R`; no se sube a git).
 
+## Precipitación mensual — Develi y Kayseri (NOAA PREC/L)
+
+- PREC/L = *Precipitation Reconstruction over Land*: malla mensual de precipitación construida con pluviómetros (GHCN v2 + CAMS), NOAA CPC / PSL.
+- Artículo de referencia: Chen, M., Xie, P., Janowiak, J. E., & Arkin, P. A. (2002). Global Land Precipitation: A 50-yr Monthly Analysis Based on Gauge Observations. *Journal of Hydrometeorology, 3*(3), 249–266.
+- Página del dataset: https://psl.noaa.gov/data/gridded/data.precl.html
+- Descarga: recorte con NetcdfSubset de `precip.mon.mean.0.5x0.5.nc` (caja 38–39 N, 35–36 E; 1975–2007): https://psl.noaa.gov/thredds/ncss/grid/Datasets/precl/0.5deg/precip.mon.mean.0.5x0.5.nc
+- Unidades: mm/día (promedio del mes); el script las pasa a mm/mes.
+- Celdas: la celda 0.5° que contiene a cada estación (Develi 38.25 N 35.25 E; Kayseri 38.75 N 35.25 E).
+- Carpeta: `data/equivalencia/fuentes/precl/` (la llena `equivalencia/07_precipitacion_precl.R`).
+
 ## Humedad relativa — Develi
 
 - Fuente: Servicio Meteorológico de Turquía (MGM), estación Develi 17836. Datos proporcionados por la Prof. Dr. Filiz Dadaşer-Çelik (Erciyes University, coautora del paper), comunicación personal por correo, 3 de noviembre de 2026.
