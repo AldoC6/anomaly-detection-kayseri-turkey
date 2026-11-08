@@ -35,15 +35,19 @@ Los archivos pesados no están en el repo: se descargan con los enlaces de abajo
 - Estación: `TUXLT848934` (DEVELI, 38.4 N, 35.5 E, 1180 m).
 - Carpeta: `data/equivalencia/fuentes/ghcnm_v4/` (la llena `equivalencia/06_temperatura_develi_ghcnm_v4.R`; no se sube a git).
 
-## Precipitación mensual — Develi y Kayseri (NOAA PREC/L)
+## Precipitación mensual — Develi y Kayseri (GPCC Full Data V2020, 0.25°)
 
-- PREC/L = *Precipitation Reconstruction over Land*: malla mensual de precipitación construida con pluviómetros (GHCN v2 + CAMS), NOAA CPC / PSL.
-- Artículo de referencia: Chen, M., Xie, P., Janowiak, J. E., & Arkin, P. A. (2002). Global Land Precipitation: A 50-yr Monthly Analysis Based on Gauge Observations. *Journal of Hydrometeorology, 3*(3), 249–266.
-- Página del dataset: https://psl.noaa.gov/data/gridded/data.precl.html
-- Descarga: recorte con NetcdfSubset de `precip.mon.mean.0.5x0.5.nc` (caja 38–39 N, 35–36 E; 1975–2007): https://psl.noaa.gov/thredds/ncss/grid/Datasets/precl/0.5deg/precip.mon.mean.0.5x0.5.nc
-- Unidades: mm/día (promedio del mes); el script las pasa a mm/mes.
-- Celdas: la celda 0.5° que contiene a cada estación (Develi 38.25 N 35.25 E; Kayseri 38.75 N 35.25 E).
-- Carpeta: `data/equivalencia/fuentes/precl/` (la llena `equivalencia/07_precipitacion_precl.R`).
+- GPCC = *Global Precipitation Climatology Centre* (Servicio Meteorológico Alemán, DWD): malla mensual de precipitación interpolada a partir de pluviómetros. Incluye la variable `numgauge` (número de pluviómetros usados en cada celda).
+- Cita: Schneider, U., Becker, A., Finger, P., Rustemeier, E., & Ziese, M. (2020). *GPCC Full Data Monthly Product Version 2020 at 0.25°: Monthly Land-Surface Precipitation from Rain-Gauges built on GTS-based and Historical Data*. DWD. https://doi.org/10.5676/DWD_GPCC/FD_M_V2020_025
+- Descarga: archivos por década `full_data_monthly_v2020_<década>_025.nc.gz` (1971_1980, 1981_1990, 1991_2000, 2001_2010): https://opendata.dwd.de/climate_environment/GPCC/full_data_monthly_v2020/025/
+- Unidades: mm/mes.
+- Celdas (centro de la celda 0.25°):
+  - Develi: 38.375 N, 35.625 E. Contiene la coordenada registrada de la estación (38.4 N, 35.5 E en GHCN-M), que es la que usa GPCC para ubicar el pluviómetro.
+  - Develi (pueblo, solo referencia): 38.375 N, 35.375 E. Contiene la coordenada MGM del pueblo; no tiene pluviómetro.
+  - Kayseri: 38.875 N, 35.375 E. Contiene el Aeropuerto de Kayseri (Erkilet).
+- Validación: en 1975–1990 los meses sin pluviómetro de la celda de Develi coinciden con los meses faltantes de Develi en NOAA GHCN-M v4 (`TUXLP331235`).
+- Carpeta: `data/equivalencia/fuentes/gpcc/` (la llena `equivalencia/07_precipitacion_gpcc.R`; pesada, no se sube a git).
+- Fuente descartada: NOAA PREC/L 0.5° (Chen et al., 2002, *Journal of Hydrometeorology, 3*(3), 249–266; https://psl.noaa.gov/data/gridded/data.precl.html). No tiene pluviómetros en la celda de Develi después de 1990, así que en ese periodo su valor depende de las estaciones vecinas. Script en `equivalencia/descartados/precipitacion_precl.R`.
 
 ## Humedad relativa — Develi
 
