@@ -1,3 +1,5 @@
+# Descartado: PREC/L no tiene pluviómetros en la celda de Develi después de 1990;
+# se reemplazó por GPCC 0.25° (equivalencia/07_precipitacion_gpcc.R).
 # Precipitación mensual de Develi y Kayseri - NOAA PREC/L (malla 0.5°)
 # Descarga con el servicio NetcdfSubset de NOAA PSL solo la zona de Kayseri
 # (4 celdas alrededor de Develi y Kayseri) para 1975-2007, extrae la celda de
