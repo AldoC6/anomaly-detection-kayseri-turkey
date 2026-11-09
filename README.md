@@ -83,7 +83,7 @@ Se corren desde la raíz del proyecto, en este orden:
 | # | Script | Entrada | Salida (en `data/equivalencia/`) |
 |---|---|---|---|
 | 1 | `equivalencia/01_descarga_ghcnh_erkilet.R` | Descarga de GHCNh | `procesados/AereopuertoKayseri_GHCNh_1975-2007.csv` |
-| 2 | `equivalencia/02_humedad_kayseri_ghcnh.R` | Salida del 1 | `procesados/kayseri-erkilet-data-relative-humidity.csv` |
+| 2 | `equivalencia/02_humedad_kayseri_ghcnh.R` | `fuentes/ghcnh_raw/` (del paso 1) | `procesados/kayseri-erkilet-relative-humidity-mensual.csv` y `procesados/kayseri-erkilet-relative-humidity.csv` (método MGM: 07, 14 y 21 h) |
 | 3 | `equivalencia/03_humedad_develi.R` | `privado/17836_RelHum.csv` | `privado/develi-data-relative-humidity.csv` |
 | 4 | `equivalencia/04_precipitacion_ghcnm_v2.R` | `fuentes/v2.prcp` | `procesados/precipitacion_GHCNMv2_Develi_Kayseri.csv` |
 | 5 | `equivalencia/05_precipitacion_anios_comunes.R` | Salida del 4 | `procesados/precipitacion_mensual_comun.csv` (los totales anuales se calculan en Excel) |
