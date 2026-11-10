@@ -13,8 +13,8 @@ Los archivos pesados no están en el repo: se descargan con los enlaces de abajo
 - Cita: Menne, M. J., et al. (2023). *Global Historical Climatology Network – Hourly (GHCNh), Version 1*. NOAA National Centers for Environmental Information. https://doi.org/10.25921/jp3d-3v19
 - Descarga (un archivo por año): `https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/<AÑO>/psv/GHCNh_TUI0000LTAU_<AÑO>.psv`
 - Carpeta: `data/equivalencia/fuentes/ghcnh_raw/` (la llena `equivalencia/01_descarga_ghcnh_erkilet.R`, ~193 MB).
-- Método de cálculo (paso 2): la humedad de Kayseri se calcula con el método de MGM, para compararla con Develi (MGM) con el mismo procedimiento:
-  - MGM define la humedad media diaria como la suma de las lecturas de 07:00, 14:00 y 21:00 (hora local) dividida entre 3, y la mensual como el promedio de los días: Meteoroloji Genel Müdürlüğü, *Tanımlar* (definiciones de las estadísticas oficiales), https://mgm.gov.tr/files/resmi-istatistikler/tanimlar.pdf
+- Método de cálculo (paso 2): la humedad y la temperatura de Kayseri se calculan con el método de MGM, para compararlas con Develi (MGM) con el mismo procedimiento:
+  - MGM define la humedad media diaria como la suma de las lecturas de 07:00, 14:00 y 21:00 (hora local) dividida entre 3, y la temperatura media diaria como (T07 + T14 + 2 × T21) / 4; en ambos casos la mensual es el promedio de los días: Meteoroloji Genel Müdürlüğü, *Tanımlar* (definiciones de las estadísticas oficiales), https://mgm.gov.tr/files/resmi-istatistikler/tanimlar.pdf
   - Las observaciones climatológicas se hacen a las 07, 14 y 21 en hora solar media del lugar, calculada con la longitud de la estación: Meteoroloji Genel Müdürlüğü, *Klimatolojik Rasat El Kitabı*, https://www.mgm.gov.tr/FILES/genel/kitaplar/KlimatolojikRasatElKitabi.pdf
   - Para Kayseri (35.50 E) eso equivale a 04:38, 11:38 y 18:38 UTC. Si no hay observación a ±30 min, se interpola entre la anterior y la siguiente (máx. 3 h).
 
