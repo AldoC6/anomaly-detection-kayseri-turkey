@@ -85,13 +85,12 @@ Se corren desde la raíz del proyecto, en este orden:
 | 1 | `equivalencia/01_descarga_ghcnh_erkilet.R` | Descarga de GHCNh | `procesados/AereopuertoKayseri_GHCNh_1975-2007.csv` |
 | 2 | `equivalencia/02_humedad_kayseri_ghcnh.R` | `fuentes/ghcnh_raw/` (del paso 1) | `procesados/kayseri-erkilet-relative-humidity[-diario\|-mensual].csv` y `procesados/kayseri-erkilet-temperature[-diario\|-mensual].csv`: por día, por mes y por año (método MGM: 07, 14 y 21 h) |
 | 3 | `equivalencia/03_humedad_develi.R` | `privado/17836_RelHum.csv` | `privado/develi-data-relative-humidity.csv` |
-| 4 | `equivalencia/04_precipitacion_ghcnm_v2.R` | `fuentes/v2.prcp` | `procesados/precipitacion_GHCNMv2_Develi_Kayseri.csv` |
-| 5 | `equivalencia/05_precipitacion_anios_comunes.R` | Salida del 4 | `procesados/precipitacion_mensual_comun.csv` (los totales anuales se calculan en Excel) |
-| 6 | `equivalencia/06_temperatura_develi_ghcnm_v4.R` | Descarga de GHCN-M v4 (`qfe`) | `procesados/develi_tavg_ghcnm_v4_qfe_1975-2007.csv` |
-| 7 | `equivalencia/07_precipitacion_gpcc.R` | Descarga de GPCC 0.25° (DWD) | `procesados/precip_gpcc025_develi_kayseri_1975-2007.csv` |
+| 7 | `equivalencia/07_precipitacion_gpcc.R` | Descarga de GPCC 0.25° (DWD) | `procesados/precip_gpcc025_develi_kayseri_1975-2007.csv` (solo para rellenar los meses que faltan en el paso 8) |
+| 8 | `equivalencia/08_precipitacion_kayseri_ghcnm_v4.R` | `fuentes/ghcnm_v4_prcp_TUMLP017196.csv` | `procesados/kayseri_precip_ghcnm_v4_1975-2007.csv` |
 
 > El paso 3 necesita datos de uso restringido que no están en el repo; sin ellos, ese paso se salta.
-> Los pasos 1, 4, 6 y 7 necesitan los archivos de `docs/fuentes.md` (el 1, el 6 y el 7 los descargan solos).
+> Los pasos 1 y 7 descargan solos sus datos (ver `docs/fuentes.md`); el 8 usa el CSV que ya está en `fuentes/`.
+> Los pasos 4, 5 y 6 se descartaron; sus scripts están en `equivalencia/descartados/` (el motivo, en `docs/fuentes.md`).
 > Las funciones del método de MGM que usa el paso 2 están en `equivalencia/funciones_mgm.R`.
 
 ---
