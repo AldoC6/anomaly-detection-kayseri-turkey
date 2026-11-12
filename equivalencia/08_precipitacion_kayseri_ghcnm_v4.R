@@ -4,7 +4,6 @@
 #
 # Fuente: Menne, M. J., et al. (2018). Global Historical Climatology Network -
 # Monthly (GHCN-M), Version 4. NOAA NCEI. https://doi.org/10.7289/V5XW4GTH
-# Requiere: install.packages("writexl")
 # ============================================================
 
 entrada <- "data/equivalencia/fuentes/ghcnm_v4_prcp_TUMLP017196.csv"
