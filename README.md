@@ -55,7 +55,9 @@ packageVersion("dbscan")   # debe devolver ‘1.1.5’
 ├── main.R                    # Script principal del análisis
 ├── utils/                    # Funciones auxiliares (limpieza, desestacionalización, gráficas, métodos)
 ├── exploracion/              # Scripts de exploración (promedios mensuales)
-├── equivalencia/             # Scripts de equivalencia Develi vs. Kayseri
+├── equivalencia/             # Scripts de equivalencia Develi vs. otras estaciones
+│   ├── candidatas/           # Temperatura y precipitación de las candidatas (GHCN-M v4)
+│   ├── filtro_ghcnm_v4/      # Búsqueda exploratoria de estaciones equivalentes (ver nota)
 │   └── descartados/          # Alternativas probadas que no se usaron
 ├── docs/
 │   └── fuentes.md            # Citas y enlaces de descarga de los datos
@@ -87,8 +89,26 @@ Se corren desde la raíz del proyecto, en este orden:
 | 3 | `equivalencia/03_humedad_develi.R` | `privado/17836_RelHum.csv` | `privado/develi-data-relative-humidity.csv` |
 | 7 | `equivalencia/07_precipitacion_gpcc.R` | Descarga de GPCC 0.25° (DWD) | `procesados/precip_gpcc025_develi_kayseri_1975-2007.csv` (solo para rellenar los meses que faltan en el paso 8) |
 | 8 | `equivalencia/08_precipitacion_kayseri_ghcnm_v4.R` | `fuentes/ghcnm_v4_prcp_TUMLP017196.csv` | `procesados/kayseri_precip_ghcnm_v4_1975-2007.csv` |
+| 9 | `equivalencia/09_referencia_develi.R` | `privado/` (datos MGM de Develi: T y P de la Prof. Altın, HR de la Prof. Dadaşer-Çelik) | `privado/develi_referencia_[mensual\|anual].csv` |
+| 10 | `equivalencia/10_filtro_temperatura_mundo.R` | `fuentes/ghcnm_v4/` (GHCN-M v4 qcu) | `privado/candidatas_temp_*.csv` y `privado/resumen_temp_*.csv` |
+| 11 | `equivalencia/11_candidatas_ghcnh_mgm.R` | `fuentes/ghcnh_raw/` | `procesados/candidatas_mgm_mensual.csv` (T y HR con el método MGM) |
+| 12 | `equivalencia/12_erzincan_isd_mgm.R` | `fuentes/isd/`, `fuentes/ghcnm_v4/prcp/` | `procesados/erzincan_mensual.csv` |
+| 13 | `equivalencia/13_candidatas_latitud_altitud.R` | `fuentes/ghcnh-station-list.txt` | `privado/candidatas_latitud_altitud.csv` (provisional) |
+| 14 | `equivalencia/14_candidatas_ghcnh_lat_alt.R` | `fuentes/ghcnh_raw/` | `procesados/candidatas_lat_alt_mgm_mensual.csv` |
+| 15 | `equivalencia/15_develi_ghcnm_v4_qcu.R` | `fuentes/ghcnm_v4/` | `procesados/develi_tavg_ghcnm_v4_qcu.csv` (Develi cruda en NOAA, para validar los datos de Develi) |
+| 16 | `equivalencia/16_meses_anios_sobre_10pct.R` | `privado/develi_referencia_mensual.csv`, `procesados/`, `fuentes/ghcnm_v4/` | `procesados/resumen_meses_anios_10pct.csv` y `privado/comparacion_10pct/` (tabla mes a mes por estación y variable, con outliers A/B) |
+| 17 | `equivalencia/17_grafica_meses_10pct.R` | `privado/comparacion_10pct/` (paso 16) | `storage/equivalencia/meses_10pct_<estacion>.png` |
 
-> El paso 3 necesita datos de uso restringido que no están en el repo; sin ellos, ese paso se salta.
+Los pasos 16 y 17 aplican el criterio del docente (`|Develi − estación| × 100 / Develi ≤ 10 %`) mes por mes y año por año
+contra todas las estaciones disponibles: Erkilet, Tomarza, Pınarbaşı y Sarız (provincia de Kayseri, hasta 1990),
+Niğde, Kırşehir, Konya, Afyon, Ankara Etimesgut y Çorum. Outliers (se marcan, no se rellenan datos):
+**A** = Develi casi en 0 (lluvia < 1 mm o temperatura entre −1 y 1 °C), donde el porcentaje no tiene sentido;
+**B** = diferencia en unidades fuera de Q1 − 1.5·IQR o Q3 + 1.5·IQR (Tukey), a investigar contra estaciones vecinas.
+
+> Los pasos 3, 9, 10, 13, 16 y 17 necesitan datos de uso restringido (`privado/`) que no están en el repo: se usan con permiso, pero no se publican.
+> `candidatas/` extrae temperatura y precipitación de Niğde, Kırşehir, Konya y Afyon de GHCN-M v4. `filtro_ghcnm_v4/` es la búsqueda
+> exploratoria que usó la versión ajustada de NOAA (qfe, con valores estimados), GPCC, kriging y Open-Meteo; se conserva como
+> registro, pero esos datos modelados o estimados **no** se usan como dataset.
 > Los pasos 1 y 7 descargan solos sus datos (ver `docs/fuentes.md`); el 8 usa el CSV que ya está en `fuentes/`.
 > Los pasos 4, 5 y 6 se descartaron; sus scripts están en `equivalencia/descartados/` (el motivo, en `docs/fuentes.md`).
 > Las funciones del método de MGM que usa el paso 2 están en `equivalencia/funciones_mgm.R`.

@@ -15,6 +15,7 @@ Los archivos pesados no están en el repo: se descargan con los enlaces de abajo
 - Cita: Menne, M. J., et al. (2023). *Global Historical Climatology Network – Hourly (GHCNh), Version 1*. NOAA National Centers for Environmental Information. https://doi.org/10.25921/jp3d-3v19
 - Descarga (un archivo por año): `https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/access/by-year/<AÑO>/psv/GHCNh_TUI0000LTAU_<AÑO>.psv`
 - Carpeta: `data/equivalencia/fuentes/ghcnh_raw/` (la llena `equivalencia/01_descarga_ghcnh_erkilet.R`, ~193 MB).
+- Lista de estaciones (nombre, latitud, longitud y altitud; la usa el paso 13): `https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-station-list.txt`, guardada en `data/equivalencia/fuentes/ghcnh-station-list.txt`.
 - Método de cálculo (paso 2): la humedad y la temperatura de Kayseri se calculan con el método de MGM, para compararlas con Develi (MGM) con el mismo procedimiento:
   - MGM define la humedad media diaria como la suma de las lecturas de 07:00, 14:00 y 21:00 (hora local) dividida entre 3, y la temperatura media diaria como (T07 + T14 + 2 × T21) / 4; en ambos casos la mensual es el promedio de los días: Meteoroloji Genel Müdürlüğü, *Tanımlar* (definiciones de las estadísticas oficiales), https://mgm.gov.tr/files/resmi-istatistikler/tanimlar.pdf
   - Las observaciones climatológicas se hacen a las 07, 14 y 21 en hora solar media del lugar, calculada con la longitud de la estación: Meteoroloji Genel Müdürlüğü, *Klimatolojik Rasat El Kitabı*, https://www.mgm.gov.tr/FILES/genel/kitaplar/KlimatolojikRasatElKitabi.pdf
@@ -46,14 +47,33 @@ Los archivos pesados no están en el repo: se descargan con los enlaces de abajo
 
 ## Temperatura media y precipitación mensuales — Develi
 
-- Fuente: Servicio Meteorológico de Turquía (MGM), estación Develi 17836, 1975–2007. Datos proporcionados por la Prof. Dr. Türkan Bayer Altın (Niğde Ömer Halisdemir Üniversitesi), comunicación personal por correo, 10 de noviembre de 2026.
+- Fuente: Servicio Meteorológico de Turquía (MGM), estación Develi 17836, 1965–2024 (en la comparación se usa 1975–2007). Datos proporcionados por la Prof. Dr. Türkan Bayer Altın (Niğde Ömer Halisdemir Üniversitesi, Departamento de Geografía), comunicación personal por correo, 10 de noviembre de 2026.
+- Contacto: taltin@ohu.edu.tr (institucional; perfil académico: https://akapedia.ohu.edu.tr/cv/turkanbayeraltin) y turkanaltin@yahoo.com (el que usa como correo de correspondencia en sus publicaciones; desde ese envió los datos).
+- Versión de los datos: es la versión actual del sistema de MGM, la misma que publican los boletines oficiales de 2020 y 2021 (ver "Boletines oficiales de MGM" más abajo).
 - Validación: la precipitación anual coincide con Barak (2009, Tabla 33) en los 32 años de 1975–2006, y la temperatura anual sigue la Figura 6 de Sönmez & Somuncu (2016, *Türk Coğrafya Dergisi, 66*).
 - Los datos no se incluyen en el repo (permiso de uso, no de publicación). Van en `data/equivalencia/privado/` (ignorada por git).
 
 ## Humedad relativa — Develi
 
 - Fuente: Servicio Meteorológico de Turquía (MGM), estación Develi 17836. Datos proporcionados por la Prof. Dr. Filiz Dadaşer-Çelik (Erciyes University, coautora del paper), comunicación personal por correo, 3 de noviembre de 2026.
+- Contacto institucional: fdadaser@erciyes.edu.tr (correo de la autora publicado en el paper).
+- Versión de los datos: es la versión anterior del sistema de MGM, la que usa el paper (ver "Boletines oficiales de MGM" más abajo).
 - Los datos no se incluyen en el repo. Van en `data/equivalencia/privado/` (ignorada por git).
+
+## Boletines oficiales de MGM — Develi 17836 (validación de la procedencia)
+
+MGM publica sus boletines climatológicos de estación ("Uzun Yıllar Tüm Parametreler Bülteni") a petición de instituciones. Varios aparecen como anexos de estudios de impacto ambiental (ÇED) y de expedientes de proyecto (PTD) del Ministerio de Medio Ambiente de Turquía, que son públicos en el portal e-ÇED: https://eced-duyuru.csb.gov.tr/eced-prod/duyurular.xhtml. Sirven para comprobar que los datos de las profesoras Altın y Dadaşer-Çelik son los oficiales de MGM.
+
+| Expediente | Proyecto (año) | Dónde está el boletín | Periodo | Versión | Comparación |
+|---|---|---|---|---|---|
+| ÇED 4356 (https://eced.csb.gov.tr/jsp/ek1/4356) | Mina de oro Öksüt, Develi — Nihai ÇED Raporu (2015) | Tabla 4.51, p. 4-218 (PDF p. 329) | 1965–2013 | Anterior | Boletín − Altın por mes: hasta +0.64 °C en verano, el mismo patrón que Dadaşer-Çelik − Altın |
+| PTD 10060 (https://eced.csb.gov.tr/jsp/ek1/10060) | Matadero Hizmet Et, Develi — Proje Tanıtım Dosyası (2015) | Ek-15, p. 112 | 1970–2014 | Anterior | Trae T07, T14 y T21: la media del boletín es (T07 + T14 + 2 × T21) / 4, la fórmula de la versión anterior |
+| ÇED 32872 (https://eced.csb.gov.tr/jsp/ek1/32872) | DSİ, Köseler Göleti y riego, Develi — Son Şekli Verilen ÇED (2021) | EK-6, PDF pp. 513–522 | 1965–2020 | Actual | Medias mensuales de temperatura iguales a Altın con diferencia ≤ 0.1 °C |
+| ÇED 40586 (https://eced.csb.gov.tr/jsp/ek1/40586) | Mina de oro Öksüt, Develi — Son Şekli Verilen ÇED (2023) | PDF pp. 2179–2189 | 1965–2021 | Actual | Temperatura: Altın con diferencia ≤ 0.06 °C por mes. Precipitación: ≤ 4.5 mm por mes. Humedad: Dadaşer-Çelik con diferencia ≤ ~1 punto |
+
+- Nota del boletín de 2021 (MGM): "Sistemde ve verilerde düzenlemeler yapılmıştır, önceki veriler ile zaman zaman farklılıklar olabilir" (se hicieron ajustes en el sistema y en los datos; puede haber diferencias con los datos anteriores).
+- Conclusión: los datos de Dadaşer-Çelik (los del paper) coinciden con la versión anterior de MGM (boletines de 2013–2014, media con 07, 14 y 21 h), y los de Altın con la versión actual (boletines de 2020–2021). Las dos son de MGM para la estación 17836; difieren por los ajustes del sistema, no por ser de otra estación.
+- Copia de los 4 PDF (pesados, no se suben a git): carpeta de Google Drive *BoletinesMGM*, https://drive.google.com/drive/folders/1tnhxybt9QQicOvyvP5yGM9MR22IQhQXR (`HIZMET ET PTD NIHAI.pdf`, `32872_Son_Sekli_Verilen_Rapor.pdf`, `4356_Nihai_CED_Raporu.pdf` y `40586_Son_Sekli_Verilen_Rapor.pdf`). En local se guardan en `data/equivalencia/fuentes/ced/`.
 
 ## Precipitación anual y temperatura máxima media anual medidas — Develi y Kayseri (Barak, 2009)
 
