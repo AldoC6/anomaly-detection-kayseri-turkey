@@ -73,7 +73,7 @@ MGM publica sus boletines climatológicos de estación ("Uzun Yıllar Tüm Param
 
 - Nota del boletín de 2021 (MGM): "Sistemde ve verilerde düzenlemeler yapılmıştır, önceki veriler ile zaman zaman farklılıklar olabilir" (se hicieron ajustes en el sistema y en los datos; puede haber diferencias con los datos anteriores).
 - Conclusión: los datos de Dadaşer-Çelik (los del paper) coinciden con la versión anterior de MGM (boletines de 2013–2014, media con 07, 14 y 21 h), y los de Altın con la versión actual (boletines de 2020–2021). Las dos son de MGM para la estación 17836; difieren por los ajustes del sistema, no por ser de otra estación.
-- Los PDF se guardan en `data/equivalencia/fuentes/ced/` (pesados, no se suben a git).
+- Copia de los 4 PDF (pesados, no se suben a git): carpeta de Google Drive *BoletinesMGM*, https://drive.google.com/drive/folders/1tnhxybt9QQicOvyvP5yGM9MR22IQhQXR (`HIZMET ET PTD NIHAI.pdf`, `32872_Son_Sekli_Verilen_Rapor.pdf`, `4356_Nihai_CED_Raporu.pdf` y `40586_Son_Sekli_Verilen_Rapor.pdf`). En local se guardan en `data/equivalencia/fuentes/ced/`.
 
 ## Precipitación anual y temperatura máxima media anual medidas — Develi y Kayseri (Barak, 2009)
 
