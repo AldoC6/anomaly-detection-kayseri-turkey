@@ -65,7 +65,6 @@ leer_isd <- function(archivo) {
              temperature = ifelse(valor == 9999 | calidad %in% c("3", "7"), NA, valor / 10))
 }
 archivos <- sprintf("%s/%s_%d.csv", carpeta, isd_id, anios)
-if (!any(file.exists(archivos))) stop("No se descargo ningun anio de ISD; revisa las direcciones de url_base")
 obs <- do.call(rbind, lapply(archivos[file.exists(archivos)], leer_isd))
 obs <- obs[!is.na(obs$fecha) & !is.na(obs$temperature), ]
 obs$relative_humidity <- NA      # funciones_mgm.R espera la columna; no se usa

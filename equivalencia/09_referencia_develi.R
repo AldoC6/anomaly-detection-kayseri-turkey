@@ -1,59 +1,56 @@
-# Paso 9: serie mensual de referencia de Develi (17836), 1965-2024
-#
-# Junta en una sola tabla los datos de Develi que se usan como referencia
-# en la comparación del paso 16:
-#   - Temperatura media mensual (°C) y precipitación mensual (mm):
-#     datos del MGM proporcionados por la Prof. Altın (versión actual del sistema).
-#   - Humedad relativa mensual (%): datos del MGM proporcionados por la
-#     Prof. Dadaşer-Çelik (1975-2008).
-#
-# Entradas (uso restringido, NO se publican):
-#   data/equivalencia/privado/temp-develi.csv    (Year, 1..12)
-#   data/equivalencia/privado/precip-develi.csv  (Year, 1..12)
-#   data/equivalencia/privado/17836_RelHum.csv   (Station No, Year, Month, relative_humidity)
-# Salida (uso restringido, NO se publica):
-#   data/equivalencia/privado/develi_referencia_mensual.csv  (anio, mes, temp, precip, hr)
-#
-# Celdas vacías:
-#   - Temperatura: no hay meses vacíos.
-#   - Precipitación: 31 celdas vacías (22 entre 1975 y 2007), todas en julio,
-#     agosto, septiembre y un noviembre, es decir, en la temporada seca. En la
-#     tabla del MGM la celda vacía se interpreta como "sin precipitación" (0 mm).
-#     No es un valor estimado: es la lectura de la celda. Para dejarlas como NA,
-#     cambia vacio_precip_es_cero a FALSE.
-#   - Humedad relativa: solo existe 1975-2008; fuera de ese periodo queda NA.
+# Referencia de Develi (MGM 17836) - temperatura, precipitacion y humedad relativa
+# Junta en una sola tabla mensual y anual los datos de Develi que se usan como
+# referencia para buscar estaciones equivalentes (pasos 10 en adelante).
+#   - Temperatura media y precipitacion mensual: MGM, datos de la Prof. Dr. Turkan
+#     Bayer Altin (1965-2024).
+#   - Humedad relativa mensual: MGM, datos de la Prof. Dr. Filiz Dadaser-Celik
+#     (1975-01 a 2009-07).
+#   - En precipitacion, las celdas vacias se toman como 0 mm: asi los totales
+#     anuales coinciden con Barak (2009, Tabla 33) en los 32 anios de 1975-2006.
+# Datos de uso restringido: entradas y salidas van en data/equivalencia/privado/
+# (ignorada por git).
+# Entradas: privado/temp-develi.csv, privado/precip-develi.csv (hojas del Excel de
+#           la Prof. Altin exportadas a CSV), privado/17836_RelHum.csv
+# Salidas:  privado/develi_referencia_mensual.csv (anio, mes, temp, precip, hr)
+#           privado/develi_referencia_anual.csv   (promedio de los 12 meses; NA si falta alguno)
+# ============================================================
 
-dir_priv <- "data/equivalencia/privado"
-vacio_precip_es_cero <- TRUE
+carpeta <- "data/equivalencia/privado"
 
-ancho_a_largo <- function(archivo, variable) {
-  d <- read.csv(file.path(dir_priv, archivo), check.names = FALSE)
-  largo <- data.frame(
-    anio = rep(d$Year, each = 12),
-    mes  = rep(1:12, times = nrow(d)),
-    valor = as.vector(t(as.matrix(d[, as.character(1:12)])))
-  )
-  names(largo)[3] <- variable
+# ---- 1. Tablas anchas (anio x 12 meses) a una fila por mes ----
+a_largo <- function(archivo, nombre) {
+  ancho <- read.csv(file.path(carpeta, archivo), check.names = FALSE)
+  largo <- data.frame(anio = rep(ancho$Year, each = 12),
+                      mes  = rep(1:12, times = nrow(ancho)),
+                      valor = as.vector(t(as.matrix(ancho[, as.character(1:12)]))))
+  names(largo)[3] <- nombre
   largo
 }
 
-temp   <- ancho_a_largo("temp-develi.csv", "temp")
-precip <- ancho_a_largo("precip-develi.csv", "precip")
-cat("Celdas vacías de precipitación:", sum(is.na(precip$precip)), "\n")
-if (vacio_precip_es_cero) precip$precip[is.na(precip$precip)] <- 0
+temp   <- a_largo("temp-develi.csv",   "temp")
+precip <- a_largo("precip-develi.csv", "precip")
+precip$precip[is.na(precip$precip)] <- 0          # celda vacia = 0 mm
 
-hr <- read.csv(file.path(dir_priv, "17836_RelHum.csv"), check.names = FALSE)
-hr <- data.frame(anio = hr$Year, mes = hr$Month, hr = hr$relative_humidity)
+# ---- 2. Humedad relativa (ya viene una fila por mes) ----
+hr <- read.csv(file.path(carpeta, "17836_RelHum.csv"))
+names(hr) <- c("estacion", "anio", "mes", "hr")  # el original trae "relative _humidity"
+hr <- hr[, c("anio", "mes", "hr")]
 
-develi <- merge(temp, precip, by = c("anio", "mes"), all = TRUE)
-develi <- merge(develi, hr, by = c("anio", "mes"), all.x = TRUE)
-develi <- develi[order(develi$anio, develi$mes), ]
+# ---- 3. Unir y guardar ----
+mensual <- merge(merge(temp, precip, by = c("anio", "mes"), all = TRUE),
+                 hr, by = c("anio", "mes"), all = TRUE)
+mensual <- mensual[order(mensual$anio, mensual$mes), ]
 
-write.csv(develi, file.path(dir_priv, "develi_referencia_mensual.csv"),
-          row.names = FALSE)
+media_12 <- function(v) if (sum(!is.na(v)) == 12) mean(v) else NA
+anual <- data.frame(
+  anio   = sort(unique(mensual$anio)),
+  temp   = tapply(mensual$temp,   mensual$anio, media_12),
+  precip = tapply(mensual$precip, mensual$anio, media_12),
+  hr     = tapply(mensual$hr,     mensual$anio, media_12)
+)
 
-cat("Develi referencia:", nrow(develi), "meses,",
-    min(develi$anio), "-", max(develi$anio), "\n")
-cat("Meses sin temp:", sum(is.na(develi$temp)),
-    "| precip en NA:", sum(is.na(develi$precip)),
-    "| con HR:", sum(!is.na(develi$hr)), "\n")
+write.csv(mensual, file.path(carpeta, "develi_referencia_mensual.csv"), row.names = FALSE)
+write.csv(anual,   file.path(carpeta, "develi_referencia_anual.csv"),   row.names = FALSE)
+
+cat("Meses:", nrow(mensual), "| anios con las 3 variables completas:",
+    sum(complete.cases(anual)), "\n")
