@@ -4,7 +4,8 @@ detectar_dbscan <- function(z, eps, minpts) {
   if (!is.numeric(eps) || length(eps) != 1 || eps <= 0) {
     stop("eps debe ser un número positivo")
   }
-  if (!is.numeric(minpts) || length(minpts) != 1 || minpts < 1) {
+  if (!is.numeric(minpts) || length(minpts) != 1 || minpts < 1 ||
+      minpts != round(minpts)) {
     stop("minpts debe ser un entero positivo")
   }
   

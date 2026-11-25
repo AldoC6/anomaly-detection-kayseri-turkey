@@ -6,8 +6,8 @@ detectar_estadistico <- function(z, k = 2) {
     stop("k debe ser un número positivo")
   }
   
-  media <- mean(z, na.rm = TRUE)
-  desviacion <- sd(z, na.rm = TRUE)
+  media <- mean(z)
+  desviacion <- sd(z)
   
   limite_inferior <- media - k * desviacion
   limite_superior <- media + k * desviacion

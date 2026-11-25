@@ -56,10 +56,7 @@ plot_original_vs_deseason <- function(df) {
          horiz = TRUE,
          bty = "n")
   
-  
-  
   invisible(NULL)
-  
 }
 
 plot_anomalias <- function(df, anomalo, subtitulo = NULL) {
@@ -85,8 +82,6 @@ plot_anomalias <- function(df, anomalo, subtitulo = NULL) {
   # Eje Y de 1 en 1; el +1 deja espacio a la leyenda
   y_min <- floor(min(df$Z, na.rm = TRUE))
   y_max <- ceiling(max(df$Z, na.rm = TRUE)) + 1
-  # Para forzar -3 a 4 con este dataset:
-  # y_min <- -3; y_max <- 4
   
   plot(fechas, df$Z,
        type = tipo,
