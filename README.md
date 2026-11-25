@@ -26,8 +26,8 @@ Las fuentes de los datos y de los métodos están en [`docs/fuentes.md`](docs/fu
 ### 1. Clonar el repositorio
 
 ```bash
-git clone <URL-DEL-REPOSITORIO>
-cd anomaly-detection-kayeri-turkey
+git clone https://github.com/AldoC6/anomaly-detection-kayseri-turkey.git
+cd anomaly-detection-kayseri-turkey
 ```
 
 ### 2. Abrir el proyecto
