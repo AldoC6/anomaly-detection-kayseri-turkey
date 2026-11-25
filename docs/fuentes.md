@@ -62,7 +62,7 @@ Los archivos pesados no están en el repo: se descargan con los enlaces de abajo
 
 ## Boletines oficiales de MGM — Develi 17836 (validación de la procedencia)
 
-MGM publica sus boletines climatológicos de estación ("Uzun Yıllar Tüm Parametreler Bülteni") a petición de instituciones. Varios aparecen como anexos de estudios de impacto ambiental (ÇED) y de expedientes de proyecto (PTD) del Ministerio de Medio Ambiente de Turquía, que son públicos en el portal e-ÇED: https://eced-duyuru.csb.gov.tr/eced-prod/duyurular.xhtml. Sirven para comprobar que los datos de las profesoras Altın y Dadaşer-Çelik son los oficiales de MGM.
+MGM publica sus boletines climatológicos de estación ("Uzun Yıllar Tüm Parametreler Bülteni") a petición de instituciones. Varios aparecen como anexos de estudios de impacto ambiental (ÇED) y de expedientes de proyecto (PTD) del Ministerio de Medio Ambiente de Turquía, que son públicos en el portal e-ÇED: https://eced-duyuru.csb.gov.tr/eced-prod/duyurular.xhtml. El portal y los enlaces de los expedientes solo abren desde Turquía; por eso hay una copia de los PDF en Google Drive (ver abajo). Sirven para comprobar que los datos de las profesoras Altın y Dadaşer-Çelik son los oficiales de MGM.
 
 | Expediente | Proyecto (año) | Dónde está el boletín | Periodo | Versión | Comparación |
 |---|---|---|---|---|---|
