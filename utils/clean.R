@@ -4,9 +4,8 @@ limpiar_datos <- function(df) {
   
   n_inicial <- nrow(df)
   
-  # 1. Centinelas -> NA (temperatura y punto de rocío)
+  # 1. Centinelas -> NA (temperatura)
   df$mean_temperature[df$mean_temperature %in% CENTINELAS] <- NA
-  df$mean_dew_point_temperature[df$mean_dew_point_temperature %in% CENTINELAS] <- NA
   
   # 2. Eliminar filas sin fecha o sin temperatura
   df <- df[!is.na(df$DATE) & !is.na(df$mean_temperature), ]
