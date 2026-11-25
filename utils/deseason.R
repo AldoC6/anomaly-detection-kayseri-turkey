@@ -9,17 +9,7 @@ monthly_z_score <- function(tm) {
   tabla_meses <- do.call(data.frame, tabla_meses)
   names(tabla_meses) <- c("Mes", "Promedio", "Desv_est")
   
-  tabla_meses$Mes <- factor(
-    tabla_meses$Mes,
-    levels = 1:12,
-    labels = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-               "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
-  )
-  
-  stats <- tabla_meses
-  stats$Mes <- as.integer(stats$Mes)
-  
-  res <- merge(tm, stats, by = "Mes", all.x = TRUE)
+  res <- merge(tm, tabla_meses, by = "Mes", all.x = TRUE)
   
   res$Z <- (res$Temp_mensual - res$Promedio) / res$Desv_est
   
