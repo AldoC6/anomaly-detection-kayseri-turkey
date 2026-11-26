@@ -51,9 +51,9 @@ plot_anomalias(kayseri_z, anom_stad3)
 
 ## Figura 5
 
-anom_eps005 <- detectar_dbscan(z, 0.05, 4)
-anom_eps01 <- detectar_dbscan(z, 0.1, 4)
-anom_eps015 <- detectar_dbscan(z, 0.15, 4)
+anom_eps005 <- dbscan_pseudocodigo(z, 0.05, 4, archivo_csv = "storage/dbscan/eps0.05_minpts4_distancias.csv") == -1
+anom_eps01  <- dbscan_pseudocodigo(z, 0.1, 4, archivo_csv = "storage/dbscan/eps0.1_minpts4_distancias.csv") == -1
+anom_eps015 <- dbscan_pseudocodigo(z, 0.15, 4, archivo_csv = "storage/dbscan/eps0.15_minpts4_distancias.csv") == -1
 
 plot_anomalias(kayseri_z, anom_eps005)
 plot_anomalias(kayseri_z, anom_eps01)
@@ -61,9 +61,19 @@ plot_anomalias(kayseri_z, anom_eps015)
 
 ## Figura 6
 
-anom_minpts2 <- detectar_dbscan(z, 0.1, 2)
-anom_minpts4 <- detectar_dbscan(z, 0.1, 4)
-anom_minpts6 <- detectar_dbscan(z, 0.1, 6)
+anom_minpts2 <- dbscan_pseudocodigo(z, 0.1, 2, archivo_csv = "storage/dbscan/eps0.1_minpts2_distancias.csv") == -1
+anom_minpts4 <- anom_eps01   # misma combinación que la figura 5b (eps = 0.1, minPts = 4)
+anom_minpts6 <- dbscan_pseudocodigo(z, 0.1, 6, archivo_csv = "storage/dbscan/eps0.1_minpts6_distancias.csv") == -1
+
+## Verificación: la implementación propia da las mismas anomalías que la libreria de dbscan
+coincide <- c(
+  identical(as.vector(anom_eps005),  detectar_dbscan(z, 0.05, 4)),
+  identical(as.vector(anom_eps01),   detectar_dbscan(z, 0.1, 4)),
+  identical(as.vector(anom_eps015),  detectar_dbscan(z, 0.15, 4)),
+  identical(as.vector(anom_minpts2), detectar_dbscan(z, 0.1, 2)),
+  identical(as.vector(anom_minpts6), detectar_dbscan(z, 0.1, 6))
+)
+cat("\nCoincide dbscan library == dbscan pseudocodigo = ", all(coincide), "\n")
 
 plot_anomalias(kayseri_z, anom_minpts2)
 plot_anomalias(kayseri_z, anom_minpts4)

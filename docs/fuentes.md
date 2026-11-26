@@ -8,8 +8,8 @@
 
 - NOAA National Centers for Environmental Information. *Synoptic Summary of the Day (SSOD), Version 2*. https://www.ncei.noaa.gov/oa/synoptic-summary-of-the-day/index.html#v2/
   - Estación: `TUI0000LTAU`, Kayseri/Erkilet (Aeropuerto de Kayseri), 38.770 N, 35.495 E, 1,055.5 m.
-  - Variable: temperatura media diaria (`mean_temperature`, °C), 1975–2007.
-  - Archivo: `data/AereopuertoKayseri_1975-2007.csv`.
+  - Variable: temperatura media diaria (`mean_temperature`, °C), 33 años: 01/01/1975 al 31/12/2007.
+  - Archivo: `data/AereopuertoKayseri_1975-2008.csv`. El nombre sigue el periodo que indica el artículo ("33 años, de 1975 a 2008"); el archivo contiene los 33 años completos de 1975 a 2007.
 
 ## Métodos
 

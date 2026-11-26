@@ -1,10 +1,10 @@
 # Detección de anomalías en temperatura con DBSCAN — Kayseri, Turquía
 
-Replicación del artículo de Çelik, Dadaşer-Çelik y Dokuz (2011), *Anomaly Detection in Temperature Data Using DBSCAN Algorithm*, con datos de la estación del Aeropuerto de Kayseri (Erkilet), 1975–2007.
+Replicación del artículo de Çelik, Dadaşer-Çelik y Dokuz (2011), *Anomaly Detection in Temperature Data Using DBSCAN Algorithm*, con datos de la estación del Aeropuerto de Kayseri (Erkilet): 33 años, de enero de 1975 a diciembre de 2007 (el artículo indica "33 años, de 1975 a 2008").
 
 El programa:
 
-1. Lee la temperatura media diaria de `data/AereopuertoKayseri_1975-2007.csv`.
+1. Lee la temperatura media diaria de `data/AereopuertoKayseri_1975-2008.csv`.
 2. Limpia los datos y calcula la temperatura media mensual.
 3. Quita la estacionalidad con el *monthly z-score*.
 4. Detecta anomalías con el método estadístico (μ ± kσ) y con DBSCAN.
@@ -82,7 +82,7 @@ Las figuras se guardan en `storage/`:
 │   ├── dbscan_method.R       # Detección de anomalías con DBSCAN
 │   └── plots.R               # Gráficas y exportación de figuras
 ├── data/
-│   └── AereopuertoKayseri_1975-2007.csv   # Temperatura media diaria (NOAA SSOD)
+│   └── AereopuertoKayseri_1975-2008.csv   # Temperatura media diaria, 01/1975–12/2007 (NOAA SSOD)
 ├── storage/                  # Figuras generadas por main.R
 ├── docs/
 │   └── fuentes.md            # Referencias de los datos y los métodos
