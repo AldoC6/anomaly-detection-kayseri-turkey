@@ -5,6 +5,7 @@ source("utils/deseason.R")
 source("utils/plots.R")
 source("utils/stat_method.R")
 source("utils/dbscan_method.R")
+source("utils/sensibilidad.R")
 
 df_kayseri<- read.csv("data/AereopuertoKayseri_1975-2008.csv", header = TRUE)
 
@@ -100,3 +101,49 @@ exportar('storage/fig5/c.png', kayseri_z, anom_eps015, "c) The results for 4 min
 exportar('storage/fig6/a.png', kayseri_z, anom_minpts2, "a) The results for 2 minpts, 0.1 eps")
 exportar('storage/fig6/b.png', kayseri_z, anom_minpts4, "b) The results for 4 minpts, 0.1 eps")
 exportar('storage/fig6/c.png', kayseri_z, anom_minpts6, "c) The results for 6 minpts, 0.1 eps")
+
+# Sensibilidad: tablas cruzadas eps x minPts
+lim <- limites_parametros(z)
+dir.create("storage/sensibilidad", showWarnings = FALSE)
+
+limites <- tabla_limites(z, lim)
+cat("\nValores límite de eps y minPts:\n")
+print(limites[, c("parametro", "fijo", "minimo", "anomalias_min", "maximo", "anomalias_max")],
+      row.names = FALSE)
+write.csv(limites, "storage/sensibilidad/limites_eps_minpts.csv", row.names = FALSE)
+
+# Zona donde los resultados cambian (incluye los valores del artículo)
+eps_vals    <- c(0.02, 0.03, 0.05, 0.075, 0.1, 0.15, 0.2, 0.3)
+minpts_vals <- c(2, 3, 4, 5, 6, 8, 10, 12)
+sens <- tabla_cruzada(z, eps_vals, minpts_vals)
+write.csv(sens, "storage/sensibilidad/tabla_cruzada_eps_minpts.csv", row.names = FALSE)
+
+for (v in c("anomalias", "frontera", "nucleo")) {
+  mat <- a_matriz(sens, v)
+  cat("\nTabla cruzada de", v, "(filas = eps, columnas = minPts):\n")
+  print(mat)
+  write.csv(mat, paste0("storage/sensibilidad/", v, "_eps_x_minpts.csv"))
+}
+
+# Tabla completa hasta los valores límite (los extremos dan 0 o 396 anomalías)
+eps_ext    <- c(lim$eps_min, 0.001, 0.005, 0.01, 0.02, 0.03, 0.05, 0.075, 0.1, 0.15, 0.2,
+                0.3, 0.5, 0.75, 1, 1.5, 2, 3, 4, lim$eps_max)
+minpts_ext <- c(1, 2, 3, 4, 5, 6, 8, 10, 15, 20, 30, 50, 100, 200, lim$minpts_max)
+sens_ext <- tabla_cruzada(z, eps_ext, minpts_ext)
+sens_ext$eps <- sapply(signif(sens_ext$eps, 3), format, scientific = FALSE)
+for (v in c("anomalias", "frontera", "nucleo")) {
+  write.csv(a_matriz(sens_ext, v), paste0("storage/sensibilidad/", v, "_completa_eps_x_minpts.csv"))
+}
+
+grafica_mapa_calor(a_matriz(sens, "anomalias"), "Anomalías según eps y minPts",
+                   "storage/sensibilidad/mapa_anomalias.png")
+grafica_mapa_calor(a_matriz(sens, "frontera"), "Puntos frontera según eps y minPts",
+                   "storage/sensibilidad/mapa_fronteras.png")
+grafica_lineas(sens, "eps", "minpts", "storage/sensibilidad/anomalias_vs_eps.png",
+               "eps", "Anomalías al variar eps (una línea por minPts)", log_x = TRUE)
+grafica_lineas(sens, "minpts", "eps", "storage/sensibilidad/anomalias_vs_minpts.png",
+               "minPts", "Anomalías al variar minPts (una línea por eps)")
+grafica_3d(a_matriz(sens, "anomalias"), "Anomalías según eps y minPts", "Anomalías",
+           "storage/sensibilidad/anomalias_3d.png")
+grafica_3d(a_matriz(sens, "frontera"), "Puntos frontera según eps y minPts", "Fronteras",
+           "storage/sensibilidad/fronteras_3d.png")
