@@ -30,11 +30,16 @@ dbscan_pseudocodigo <- function(z, eps, minpts,
   }
 
   # 1. import the data-set into D (m filas, n columnas)
-  D <- as.matrix(z)
+  D <- as.matrix(unname(z))
   m <- nrow(D)
 
-  # Imprime en consola solo si imprimir = TRUE
-  imprime <- function(...) if (imprimir) cat(...)
+  if (imprimir) {
+    archivo_txt <- sprintf("storage/dbscan/iteraciones_eps%s_minpts%d.txt", eps, minpts)
+    dir.create(dirname(archivo_txt), recursive = TRUE, showWarnings = FALSE)
+    con_txt <- file(archivo_txt, open = "w", encoding = "UTF-8")
+    on.exit(close(con_txt), add = TRUE)
+  }
+  imprime <- function(...) if (imprimir) { cat(...); cat(..., file = con_txt) }
 
   # distance(i, D): distancia euclidiana del punto i a todos los puntos
   distance <- function(i, D) sqrt(rowSums((D - matrix(D[i, ], nrow(D), ncol(D), byrow = TRUE))^2))
@@ -56,12 +61,14 @@ dbscan_pseudocodigo <- function(z, eps, minpts,
   tipo      <- character(m)
   class_no  <- 1
 
-  imprime(sprintf("\n========== DBSCAN | Eps = %s | Minpts = %d | [L1] m = %d ==========\n",
-              eps, minpts, m))
+  # Etiqueta de cada punto: la fecha (names(z)) si existe; si no, el índice
+  etiqueta <- if (!is.null(names(z))) names(z) else as.character(seq_len(m))
+
+  imprime(sprintf("\n========== DBSCAN | Eps = %s | Minpts = %d | m = %d ==========\n",
+                  eps, minpts, m))
 
   # 2. for i = 1 to m
   for (i in seq_len(m)) {
-    imprime(sprintf("\n--- [L2] Iteración %d de %d | punto i = %d | valor = %.4f ---\n", i, m, i, D[i, 1]))
 
     # 3. Dist = distance(i, D)
     Dist <- distance(i, D)
@@ -87,48 +94,61 @@ dbscan_pseudocodigo <- function(z, eps, minpts,
 
     # 4. neighbors = find(Dist =< Eps)
     neighbors <- which(Dist <= eps)
-    imprime(sprintf("  [L4] neighbors (Dist <= %s): %s\n", eps,
-                paste(sprintf("%d [Dist = %.4f]", neighbors, Dist[neighbors]), collapse = ", ")))
-    imprime(sprintf("       puntos que exceden Eps (Dist > %s): %d\n", eps, m - length(neighbors)))
 
     # 5. neighbor_count = count(neighbors)
     neighbor_count <- length(neighbors)
-    imprime(sprintf("  [L5] neighbor_count = %d\n", neighbor_count))
 
     # 6. core_neig = check_core_neighbor(neighbors)
     cn <- check_core_neighbor(neighbors)
     core_neig <- cn$hay_nucleo
-    imprime(sprintf("  [L6] conteo de cada vecino: %s\n",
-                paste(sprintf("%d -> %d", neighbors, cn$conteos), collapse = ", ")))
-    imprime(sprintf("  [L6] core_neig = %s%s\n", core_neig,
-                if (core_neig) paste0(" (vecinos núcleo: ", paste(cn$nucleos, collapse = ", "), ")") else ""))
 
     # 7. if (neighbor_count >= minpts)
     if (neighbor_count >= minpts) {
-      imprime(sprintf("  [L7] neighbor_count (%d) >= minpts (%d) -> punto núcleo\n", neighbor_count, minpts))
       class_vec[i] <- class_no                               # 8. class(i) = class_no
       clase_iteracion[i] <- class_no
       tipo[i] <- "núcleo"
       for (point in neighbors) {                             # 9. while (more points near i)
         class_vec[point] <- class_no                         # 10. class(point) = class_no
       }
-      imprime(sprintf("  [L8-12] class(%d) = %d y class(point) = %d para los puntos: %s\n",
-                  i, class_no, class_no, paste(neighbors, collapse = ", ")))
       class_no <- class_no + 1                               # 12. class_no += 1
 
     } else if (neighbor_count < minpts && core_neig == TRUE) {   # 13.
       class_vec[i] <- 0                                      # 14. border point
       clase_iteracion[i] <- 0
       tipo[i] <- "frontera"
-      imprime(sprintf("  [L13-14] neighbor_count (%d) < minpts (%d) y core_neig = TRUE -> class(%d) = 0 (punto frontera)\n",
-                  neighbor_count, minpts, i))
 
     } else if (neighbor_count < minpts) {                    # 15.
       class_vec[i] <- -1                                     # 16. outlier point
       clase_iteracion[i] <- -1
       tipo[i] <- "atípico"
-      imprime(sprintf("  [L15-16] neighbor_count (%d) < minpts (%d) y core_neig = FALSE -> class(%d) = -1 (punto atípico, ANOMALÍA)\n",
-                  neighbor_count, minpts, i))
+    }
+
+    # Impresión de la iteración i, paso por paso del pseudocódigo
+    orden <- order(Dist[neighbors])                     # vecinos de más cercano a más lejano
+    vec <- neighbors[orden]
+    con <- cn$conteos[orden]
+    imprime(sprintf("\nITERACION i = %d de %d\n", i, m))
+    imprime(sprintf("Paso 2    punto i = %d | mes %s | valor = %.4f\n", i, etiqueta[i], D[i, 1]))
+    imprime(sprintf("Paso 3    Dist = distancia del punto %d a los %d puntos: %d con Dist <= Eps (%s), %d exceden Eps\n",
+                    i, m, neighbor_count, eps, m - neighbor_count))
+    imprime(sprintf("Paso 4    neighbors = find(Dist =< Eps): %d vecinos\n", neighbor_count))
+    for (k in seq_along(vec)) {
+      imprime(sprintf("            j = %3d | mes %s | valor = %8.4f | Dist = %.4f <= %s | su conteo = %3d | nucleo = %s\n",
+                      vec[k], etiqueta[vec[k]], D[vec[k], 1], Dist[vec[k]], eps, con[k],
+                      if (con[k] >= minpts) "SI" else "NO"))
+    }
+    imprime(sprintf("Paso 5    neighbor_count = %d\n", neighbor_count))
+    imprime(sprintf("Paso 6    core_neig (¿algún vecino es núcleo?) = %s (%d de %d vecinos son núcleo)\n",
+                    core_neig, sum(con >= minpts), neighbor_count))
+    imprime(sprintf("Paso 7    neighbor_count >= minpts ?  %d >= %d  ->  %s\n",
+                    neighbor_count, minpts, if (neighbor_count >= minpts) "SI" else "NO"))
+    if (tipo[i] == "núcleo") {
+      imprime(sprintf("Pasos 8-12  class(%d) = %d y class(point) = %d para sus %d vecinos; class_no pasa a %d  ->  NUCLEO\n",
+                      i, clase_iteracion[i], clase_iteracion[i], neighbor_count, clase_iteracion[i] + 1))
+    } else if (tipo[i] == "frontera") {
+      imprime(sprintf("Pasos 13-14 neighbor_count < minpts y core_neig = TRUE  ->  class(%d) = 0  ->  FRONTERA\n", i))
+    } else {
+      imprime(sprintf("Pasos 15-16 neighbor_count < minpts y core_neig = FALSE  ->  class(%d) = -1  ->  ANOMALIA\n", i))
     }
   }
 
@@ -146,6 +166,11 @@ dbscan_pseudocodigo <- function(z, eps, minpts,
                              "atípico" = "atipico")[tipo[tabla_dist$i]]
     write.csv(tabla_dist, archivo_csv, row.names = FALSE)
     cat("Distancias de todas las iteraciones guardadas en:", archivo_csv, "\n")
+  }
+
+  if (imprimir) {
+    cat("Iteraciones completas guardadas en:", archivo_txt, "\n")
+    if (interactive()) file.edit(archivo_txt)
   }
 
   # 19. return class

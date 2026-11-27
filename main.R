@@ -37,6 +37,7 @@ dim(tm)
 kayseri_z <- monthly_z_score(tm)
 
 z <- kayseri_z$Z
+names(z) <- sprintf("%d-%02d", kayseri_z$Anio, kayseri_z$Mes)   # fecha de cada punto
 
 # Figuras
 ## Figura 3
@@ -99,4 +100,3 @@ exportar('storage/fig5/c.png', kayseri_z, anom_eps015, "c) The results for 4 min
 exportar('storage/fig6/a.png', kayseri_z, anom_minpts2, "a) The results for 2 minpts, 0.1 eps")
 exportar('storage/fig6/b.png', kayseri_z, anom_minpts4, "b) The results for 4 minpts, 0.1 eps")
 exportar('storage/fig6/c.png', kayseri_z, anom_minpts6, "c) The results for 6 minpts, 0.1 eps")
-
