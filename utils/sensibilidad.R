@@ -31,7 +31,12 @@ tabla_cruzada <- function(z, eps_vals, minpts_vals) {
       core_neig <- as.vector(vecino %*% nucleo) > 0  # check_core_neighbor
       frontera  <- !nucleo & core_neig
       anomalia  <- !nucleo & !core_neig
-      filas[[length(filas) + 1]] <- data.frame(eps = eps, minpts = minpts,
+      # grupos: los núcleos a distancia <= eps uno de otro forman el mismo grupo;
+      # en una dimensión, se abre un grupo nuevo cada vez que entre dos núcleos
+      # consecutivos (ordenados) hay un hueco mayor que eps
+      zn <- sort(z[nucleo])
+      grupos <- if (length(zn) == 0) 0 else 1 + sum(diff(zn) > eps)
+      filas[[length(filas) + 1]] <- data.frame(eps = eps, minpts = minpts, grupos = grupos,
                                                nucleo = sum(nucleo), frontera = sum(frontera),
                                                anomalias = sum(anomalia))
     }

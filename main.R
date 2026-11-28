@@ -118,7 +118,7 @@ minpts_vals <- c(2, 3, 4, 5, 6, 8, 10, 12)
 sens <- tabla_cruzada(z, eps_vals, minpts_vals)
 write.csv(sens, "storage/sensibilidad/tabla_cruzada_eps_minpts.csv", row.names = FALSE)
 
-for (v in c("anomalias", "frontera", "nucleo")) {
+for (v in c("grupos", "anomalias", "frontera", "nucleo")) {
   mat <- a_matriz(sens, v)
   cat("\nTabla cruzada de", v, "(filas = eps, columnas = minPts):\n")
   print(mat)
@@ -131,10 +131,12 @@ eps_ext    <- c(lim$eps_min, 0.001, 0.005, 0.01, 0.02, 0.03, 0.05, 0.075, 0.1, 0
 minpts_ext <- c(1, 2, 3, 4, 5, 6, 8, 10, 15, 20, 30, 50, 100, 200, lim$minpts_max)
 sens_ext <- tabla_cruzada(z, eps_ext, minpts_ext)
 sens_ext$eps <- sapply(signif(sens_ext$eps, 3), format, scientific = FALSE)
-for (v in c("anomalias", "frontera", "nucleo")) {
+for (v in c("grupos", "anomalias", "frontera", "nucleo")) {
   write.csv(a_matriz(sens_ext, v), paste0("storage/sensibilidad/", v, "_completa_eps_x_minpts.csv"))
 }
 
+grafica_mapa_calor(a_matriz(sens, "grupos"), "Grupos (clusters) según eps y minPts",
+                   "storage/sensibilidad/mapa_grupos.png")
 grafica_mapa_calor(a_matriz(sens, "anomalias"), "Anomalías según eps y minPts",
                    "storage/sensibilidad/mapa_anomalias.png")
 grafica_mapa_calor(a_matriz(sens, "frontera"), "Puntos frontera según eps y minPts",
@@ -147,3 +149,5 @@ grafica_3d(a_matriz(sens, "anomalias"), "Anomalías según eps y minPts", "Anoma
            "storage/sensibilidad/anomalias_3d.png")
 grafica_3d(a_matriz(sens, "frontera"), "Puntos frontera según eps y minPts", "Fronteras",
            "storage/sensibilidad/fronteras_3d.png")
+grafica_3d(a_matriz(sens, "grupos"), "Grupos (clusters) según eps y minPts", "Grupos",
+           "storage/sensibilidad/grupos_3d.png")
