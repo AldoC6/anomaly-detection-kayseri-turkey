@@ -7,8 +7,9 @@ El programa:
 1. Lee la temperatura media diaria de `data/AereopuertoKayseri_1975-2008.csv`.
 2. Limpia los datos y calcula la temperatura media mensual.
 3. Quita la estacionalidad con el *monthly z-score*.
-4. Detecta anomalías con el método estadístico (μ ± kσ) y con DBSCAN.
+4. Detecta anomalías con el método estadístico (μ ± kσ) y con DBSCAN, programado a partir del pseudocódigo del artículo (Algoritmo 1). El paquete `dbscan` se usa solo para verificar que los resultados sean iguales.
 5. Genera las figuras 3, 4, 5 y 6 del artículo en `storage/`.
+6. Analiza la sensibilidad de DBSCAN a `eps` y `minPts`: valores límite y tablas cruzadas de grupos, anomalías, fronteras y núcleos, con sus gráficas (mapas de calor, líneas y superficies 3D).
 
 Las fuentes de los datos y de los métodos están en [`docs/fuentes.md`](docs/fuentes.md).
 
@@ -68,6 +69,31 @@ Las figuras se guardan en `storage/`:
 | 5 | `storage/fig5/a.png`, `b.png`, `c.png` | DBSCAN, minPts = 4 y eps = 0.05, 0.1, 0.15 |
 | 6 | `storage/fig6/a.png`, `b.png`, `c.png` | DBSCAN, eps = 0.1 y minPts = 2, 4, 6 |
 
+En la consola debe aparecer `Coincide dbscan library == dbscan pseudocodigo =  TRUE`: la implementación propia marca los mismos meses que el paquete `dbscan`.
+
+Además se guardan:
+
+| Carpeta | Archivos | Contenido |
+|---|---|---|
+| `storage/dbscan/` | `eps{eps}_minpts{minpts}_distancias.csv` | Para cada configuración del artículo: distancia de cada par de puntos (i, j), si es vecino, conteo de vecinos, clase y decisión (núcleo, frontera o atípico) |
+| `storage/sensibilidad/` | `limites_eps_minpts.csv` | Valores mínimo y máximo de eps y minPts, y por qué |
+| | `grupos_`, `anomalias_`, `frontera_`, `nucleo_eps_x_minpts.csv` | Tablas cruzadas eps × minPts en la zona donde cambian los resultados (eps 0.02–0.3, minPts 2–12) |
+| | `*_completa_eps_x_minpts.csv` | Las mismas tablas hasta los valores límite (eps 0.0000347–5.72, minPts 1–396) |
+| | `tabla_cruzada_eps_minpts.csv` | Todas las combinaciones de la zona principal en formato largo |
+| | `mapa_*.png`, `anomalias_vs_*.png`, `*_3d.png` | Mapas de calor, gráficas de líneas y superficies 3D |
+
+> Si algún `.csv` de `storage/` está abierto en Excel, ciérralo antes de ejecutar; si no, R no puede reemplazarlo.
+
+### Corrida paso a paso con otros parámetros
+
+Después de ejecutar `main.R`, para ver cómo DBSCAN clasifica cada mes con cualquier `eps` y `minPts`:
+
+```r
+dbscan_pseudocodigo(z, 0.05, 3, archivo_csv = "storage/dbscan/prueba.csv", imprimir = TRUE)
+```
+
+Imprime el resumen en la consola, guarda las distancias en el CSV y escribe cada iteración (vecinos, conteos y decisión) en `storage/dbscan/iteraciones_eps0.05_minpts3.txt`, que RStudio abre automáticamente.
+
 ---
 
 ## Estructura del proyecto
@@ -79,11 +105,12 @@ Las figuras se guardan en `storage/`:
 │   ├── clean.R               # Limpieza de datos (centinelas, NA, fechas duplicadas)
 │   ├── deseason.R            # Monthly z-score (desestacionalización)
 │   ├── stat_method.R         # Método estadístico μ ± kσ
-│   ├── dbscan_method.R       # Detección de anomalías con DBSCAN
+│   ├── dbscan_method.R       # DBSCAN según el pseudocódigo del artículo y verificación con el paquete
+│   ├── sensibilidad.R        # Límites y tablas cruzadas de eps × minPts, gráficas
 │   └── plots.R               # Gráficas y exportación de figuras
 ├── data/
 │   └── AereopuertoKayseri_1975-2008.csv   # Temperatura media diaria, 01/1975–12/2007 (NOAA SSOD)
-├── storage/                  # Figuras generadas por main.R
+├── storage/                  # Salidas de main.R: fig4/, fig5/, fig6/, dbscan/, sensibilidad/
 ├── docs/
 │   └── fuentes.md            # Referencias de los datos y los métodos
 ├── renv/                     # Configuración de renv
